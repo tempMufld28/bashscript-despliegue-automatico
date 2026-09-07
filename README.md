@@ -67,8 +67,8 @@ Despliegue de Nube/
 Clonar el repositorio en el directorio de usuario y ejecutar el instalador:
 
 ```bash
-git clone <URL_DEL_REPOSITORIO> ~/homelab
-cd ~/homelab/"Despliegue de Nube"
+git clone <https://github.com/tempMufld28/bashscript-despliegue-automatico.git> ~/homelab
+cd ~/homelab/
 chmod +x deploy.sh
 ./deploy.sh
 ```
