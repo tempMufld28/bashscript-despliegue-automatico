@@ -1,0 +1,31 @@
+services:
+  # Portal Web con Webhook de Dispositivos Conectados y Credenciales
+  team-portal:
+    build: ./portal
+    container_name: rpi-team-portal
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PORTAL_PORT=${PORTAL_PORT:-8080}
+      - PORTAL_ACCESS_PASSWORD=${PORTAL_ACCESS_PASSWORD:-TeamAccess2026}
+      - HOTSPOT_SSID=${HOTSPOT_SSID:-RPi5-TeamNetwork}
+      - PAIRDROP_URL=http://${HOTSPOT_IP:-192.168.4.1}:3000
+    volumes:
+      - /proc/net/arp:/proc/net/arp:ro
+
+  # PairDrop (LocalSend Web): Compartición de archivos P2P en red local vía navegador
+  pairdrop:
+    image: lscr.io/linuxserver/pairdrop:latest
+    container_name: pairdrop-fileshare
+    restart: unless-stopped
+    ports:
+      - "${PAIRDROP_BIND_IP:-0.0.0.0}:${PAIRDROP_PORT:-3000}:3000"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Mexico_City
+      - WS_FALLBACK=true
+    deploy:
+      resources:
+        limits:
+          memory: 512M

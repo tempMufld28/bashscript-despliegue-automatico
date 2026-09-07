@@ -1,0 +1,25 @@
+name: Verificacion de Sintaxis y Linting
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo fuente
+        uses: actions/checkout@v4
+
+      - name: Validar sintaxis de scripts Bash
+        run: |
+          find . -name "*.sh" -exec bash -n {} +
+
+      - name: Validar archivos Docker Compose
+        run: |
+          for f in $(find services -name "docker-compose.yml"); do
+            echo "Validando $f"
+            docker compose -f "$f" config > /dev/null
+          done

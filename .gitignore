@@ -1,0 +1,48 @@
+# ==============================================================================
+# Git Ignore - Despliegue de Nube
+# ==============================================================================
+
+# Entorno y credenciales sensibles (NUNCA subir a repositorios publicos)
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.crt
+*.pfx
+
+# Excepcion: mantener plantilla de ejemplo
+!.env.example
+
+# Datos persistentes generados por contenedores
+services/obsidian/data/
+services/management/data/
+services/cicd/gitea-data/
+services/cicd/jenkins-data/
+services/network/etc-pihole/
+services/network/etc-dnsmasq.d/
+data/
+
+# Modelos pesados de Inteligencia Artificial (descargar via HuggingFace)
+services/ai-sandbox/models/*.gguf
+services/ai-sandbox/models/*.bin
+!services/ai-sandbox/models/.gitkeep
+
+# Archivos de registro y logs del sistema
+*.log
+logs/
+*.pid
+
+# Cache de Python y compilacion
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+
+# Archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~

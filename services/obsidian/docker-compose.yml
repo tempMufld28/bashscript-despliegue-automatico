@@ -1,0 +1,18 @@
+services:
+  couchdb:
+    image: couchdb:3.3
+    container_name: obsidian-couchdb
+    restart: unless-stopped
+    ports:
+      # Por seguridad bind a 127.0.0.1 (o cambiar en .env) para que solo sea accesible vía Tailscale
+      - "${OBSIDIAN_BIND_IP:-127.0.0.1}:${COUCHDB_PORT:-5984}:5984"
+    environment:
+      - COUCHDB_USER=${COUCHDB_USER:-admin}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD:-changeme_strong_password}
+    volumes:
+      - ./data:/opt/couchdb/data
+      - ./local.ini:/opt/couchdb/etc/local.d/local.ini:ro
+    deploy:
+      resources:
+        limits:
+          memory: 1024M

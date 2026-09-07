@@ -1,0 +1,21 @@
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole-dns
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "${PIHOLE_BIND_IP:-127.0.0.1}:${PIHOLE_WEB_PORT:-8082}:80/tcp"
+    environment:
+      TZ: 'America/Mexico_City'
+      WEBPASSWORD: '${PIHOLE_PASSWORD:-adminpassword2026}'
+    volumes:
+      - './etc-pihole:/etc/pihole'
+      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+    cap_add:
+      - NET_ADMIN
+    deploy:
+      resources:
+        limits:
+          memory: 512M

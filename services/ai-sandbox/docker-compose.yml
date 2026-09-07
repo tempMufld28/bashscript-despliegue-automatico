@@ -1,0 +1,14 @@
+services:
+  llama-cpp:
+    image: ghcr.io/ggerganov/llama.cpp:server
+    container_name: llama-server
+    restart: unless-stopped
+    command: -m /models/${LLAMA_MODEL_FILE:-LFM2.5-2.6B-Q_4_K_M.gguf} -c 2048 --host 0.0.0.0 --port 8000 --threads ${LLAMA_THREADS:-4}
+    ports:
+      - "${AI_BIND_IP:-127.0.0.1}:${AI_PORT:-8000}:8000"
+    volumes:
+      - ./models:/models
+    deploy:
+      resources:
+        limits:
+          memory: ${LLAMA_MAX_RAM:-4G}

@@ -1,0 +1,35 @@
+services:
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea-server
+    restart: unless-stopped
+    ports:
+      - "${GITEA_BIND_IP:-127.0.0.1}:${GITEA_HTTP_PORT:-3001}:3000"
+      - "${GITEA_BIND_IP:-127.0.0.1}:${GITEA_SSH_PORT:-2222}:22"
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    volumes:
+      - ./gitea-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins-ci
+    restart: unless-stopped
+    ports:
+      - "${JENKINS_BIND_IP:-127.0.0.1}:${JENKINS_PORT:-8081}:8080"
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    volumes:
+      - ./jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      resources:
+        limits:
+          memory: 2048M

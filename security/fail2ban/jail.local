@@ -1,0 +1,12 @@
+[DEFAULT]
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+banaction = ufw
+ignoreip = 127.0.0.1/8 ::1 100.64.0.0/10 192.168.4.0/24
+
+[sshd]
+enabled = true
+port    = ssh,22
+logpath = /var/log/auth.log
+maxretry = 3
